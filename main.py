@@ -8,11 +8,8 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
-from requests import get
 from pandas import DataFrame
-
-
-
+from requests import get
 
 OUTPUT_FOLDER = './data/'
 URL = 'https://api.usaspending.gov/'
