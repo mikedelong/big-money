@@ -10,8 +10,10 @@ from pathlib import Path
 from arrow import now
 from pandas import DataFrame
 from requests import get
-from requests import post
 
+AGENCIES = [100, 156, 183, 209, 252, 267, 308, 315, 456, 503, 535, 538, 539, 552, 554, 558, 560, 561, 601, 610, 611,
+            614, 648, 650, 651, 654, 655, 680, 682, 685, 687, 692, 693, 694, 695, 697, 699, 700, 731, 766, 800, 801,
+            803, 805, 806, 860, 862, 878, 879, 882, 925, 930]
 OUTPUT_FOLDER = './data/'
 URL = 'https://api.usaspending.gov/'
 
@@ -25,12 +27,8 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    # found values for agency are 400? and 456
-    agencies = [100, 156, 183, 209, 252, 267, 308, 315, 456]
-
-    data = {agency:
-                get(url=URL + '/api/v2/references/agency/{}/'.format(agency)).json()['results']
-            for agency in range(457,600)
-            }
+    data = {agency: get(url=URL + '/api/v2/references/agency/{}/'.format(agency)).json()['results'] for agency in
+            AGENCIES}
     df = DataFrame(data=data).T.drop_duplicates()
+    LOGGER.info(df.index.unique())
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
