@@ -1,6 +1,6 @@
-'''
+"""
 Get some data from the USASpending API
-'''
+"""
 
 from logging import INFO
 from logging import basicConfig
