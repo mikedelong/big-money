@@ -29,8 +29,17 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    data = {agency: get(url=URL + '/api/v2/references/agency/{}/'.format(agency)).json()['results'] for agency in
-            AGENCIES}
+    endpoint = '/api/v2/references/agency/{}/'
+    data = dict()
+    for agency in AGENCIES:
+        LOGGER.info(agency)
+        result = get(url=URL + endpoint.format(agency)).json()
+        if result:
+            data[agency] = result['results']
+    # data = {agency: get(url=URL + endpoint.format(agency)).json()['results'] for agency in AGENCIES}
     df = DataFrame(data=data).T.drop_duplicates()
-    LOGGER.info(df.index.unique().tolist())
+
+    output_file = OUTPUT_FOLDER + 'agencies-{}.csv'.format(df['active_fy'].unique()[0])
+    LOGGER.info('writing %d rows to %s', len(df), output_file)
+    df.to_csv(path_or_buf=output_file)
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
