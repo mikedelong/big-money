@@ -8,7 +8,7 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
-from pandas import DataFrame
+from matplotlib.pyplot import savefig
 from pandas import read_csv
 
 INPUT_FILE = 'agencies-2023.csv'
@@ -33,4 +33,13 @@ if __name__ == '__main__':
     LOGGER.info('loading: %s', filepath_or_buffer)
     df = read_csv(filepath_or_buffer=filepath_or_buffer, usecols=USECOLS)
 
+    outlay_amount = df['outlay_amount'].sum()
+    obligated_amount = df['obligated_amount'].sum()
+    current_total = df['current_total_budget_authority_amount'].sum()
+    authority_amount = df['budget_authority_amount'].unique()[0]
+
+    fractions = [item / authority_amount for item in [outlay_amount, obligated_amount, current_total]]
+    columns = ['outlay_amount', 'obligated_amount', 'current_total_budget_authority_amount']
+    plot = df[columns].plot.pie(subplots=True, figsize=(11, 6))
+    savefig(fname=OUTPUT_FOLDER + 'triple_plot.png', format='png')
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
