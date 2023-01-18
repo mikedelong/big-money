@@ -23,6 +23,8 @@ if __name__ == '__main__':
     TIME_START = now()
     LOGGER = getLogger(__name__, )
     basicConfig(format='%(asctime)s : %(name)s : %(levelname)s : %(message)s', level=INFO, )
+    if LOGGER.hasHandlers():
+        LOGGER.handlers.clear()
     LOGGER.info('started')
 
     for folder in [OUTPUT_FOLDER]:
