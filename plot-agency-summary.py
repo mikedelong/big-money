@@ -43,11 +43,13 @@ if __name__ == '__main__':
 
     fractions = [item / authority_amount for item in [outlay_amount, obligated_amount, current_total]]
 
-    for fname, columns in {
+    for short_name, columns in {
+        'authority_plot.png': ['budget_authority_amount'], 'obligation_plot.png': ['obligated_amount', ],
+        'outlay_plot.png': ['outlay_amount', ],
         'triple_plot.png': ['outlay_amount', 'obligated_amount', 'budget_authority_amount'],
-        'outlay_plot.png': ['outlay_amount', ]
     }.items():
         plot = df[columns].plot.pie(subplots=True, figsize=(11, 6), labels=df['agency_name'])
-        savefig(fname=OUTPUT_FOLDER + fname, format='png')
+        fname = OUTPUT_FOLDER + short_name
+        savefig(fname=fname, format='png')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
