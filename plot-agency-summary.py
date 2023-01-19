@@ -39,7 +39,7 @@ if __name__ == '__main__':
     authority_amount = df['budget_authority_amount'].unique()[0]
 
     fractions = [item / authority_amount for item in [outlay_amount, obligated_amount, current_total]]
-    columns = ['outlay_amount', 'obligated_amount', 'current_total_budget_authority_amount']
+    columns = ['outlay_amount', 'obligated_amount', 'budget_authority_amount']
     plot = df[columns].plot.pie(subplots=True, figsize=(11, 6))
     savefig(fname=OUTPUT_FOLDER + 'triple_plot.png', format='png')
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
