@@ -10,6 +10,8 @@ from pathlib import Path
 from arrow import now
 from matplotlib.pyplot import savefig
 from pandas import read_csv
+from plotly.graph_objects import Figure
+from plotly.graph_objects import Treemap
 
 INPUT_FILE = 'agencies-2023.csv'
 INPUT_FOLDER = './data/'
@@ -51,5 +53,11 @@ if __name__ == '__main__':
         plot = df[columns].plot.pie(subplots=True, figsize=(11, 6), labels=df['agency_name'])
         fname = OUTPUT_FOLDER + short_name
         savefig(fname=fname, format='png')
+
+    for column in ['outlay_amount', 'obligated_amount', 'budget_authority_amount']:
+        LOGGER.info('building treemap: %s', column)
+        fig = Figure(Treemap(labels=df['agency_name'], parents=[''] * len(df), values=df[column]))
+        fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
+        fig.write_html(f'{OUTPUT_FOLDER}{column}.html')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
