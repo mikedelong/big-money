@@ -1,5 +1,5 @@
 '''
-Load and graph agency top-level data
+Demo the plotly tree map
 '''
 
 from logging import INFO
@@ -12,7 +12,12 @@ from plotly.graph_objects import Treemap
 from plotly.subplots import make_subplots
 
 INPUT_FOLDER = './data/'
+LABELS = ['Eve', 'Cain', 'Seth', 'Enos', 'Noam', 'Abel', 'Awan', 'Enoch', 'Azura']
+PARENTS = ['', 'Eve', 'Eve', 'Seth', 'Seth', 'Eve', 'Eve', 'Awan', 'Eve']
 OUTPUT_FOLDER = './plot/'
+SOURCE = 'https://plotly.com/python/treemaps/'
+VALUES = [10, 14, 12, 10, 2, 6, 6, 1, 4]
+TOTAL_VALUES = [65, 14, 12, 10, 2, 6, 6, 1, 4]
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -26,32 +31,17 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    labels = ['Eve', 'Cain', 'Seth', 'Enos', 'Noam', 'Abel', 'Awan', 'Enoch', 'Azura']
-    parents = ['', 'Eve', 'Eve', 'Seth', 'Seth', 'Eve', 'Eve', 'Awan', 'Eve']
-
     fig = make_subplots(
-        cols=2, rows=1,
-        column_widths=[0.4, 0.4],
+        cols=2, rows=1, column_widths=[0.4, 0.4],
         subplot_titles=('branchvalues: <b>remainder<br />&nbsp;<br />', 'branchvalues: <b>total<br />&nbsp;<br />'),
         specs=[[{'type': 'treemap', 'rowspan': 1}, {'type': 'treemap'}]]
     )
 
-    fig.add_trace(Treemap(
-        labels=labels,
-        parents=parents,
-        values=[10, 14, 12, 10, 2, 6, 6, 1, 4],
-        textinfo='label+value+percent parent+percent entry+percent root',
-        # root_color='lightgrey'
-    ), row=1, col=1)
+    fig.add_trace(Treemap(labels=LABELS, parents=PARENTS, values=VALUES,
+                          textinfo='label+value+percent parent+percent entry+percent root', ), row=1, col=1)
 
-    fig.add_trace(Treemap(
-        branchvalues='total',
-        labels=labels,
-        parents=parents,
-        values=[65, 14, 12, 10, 2, 6, 6, 1, 4],
-        textinfo='label+value+percent parent+percent entry',
-        # root_color='lightgrey'
-    ), row=1, col=2)
+    fig.add_trace(Treemap(branchvalues='total', labels=LABELS, parents=PARENTS, values=TOTAL_VALUES,
+                          textinfo='label+value+percent parent+percent entry', ), row=1, col=2)
 
     fig.update_layout(margin=dict(t=50, l=25, r=25, b=25))
     fig.write_html(OUTPUT_FOLDER + 'demo_treemap.html')
