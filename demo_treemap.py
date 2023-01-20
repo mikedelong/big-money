@@ -1,6 +1,6 @@
-'''
+"""
 Demo the plotly tree map
-'''
+"""
 
 from logging import INFO
 from logging import basicConfig
