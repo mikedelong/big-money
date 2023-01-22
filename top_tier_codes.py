@@ -4,15 +4,16 @@ Get some data from the USASpending API
 
 from json import dump
 from logging import INFO
+from logging import Logger
 from logging import basicConfig
 from logging import getLogger
-from logging import Logger
 from pathlib import Path
 
 from arrow import now
 from requests import get
 
 from agencies import TOP_TIER
+
 
 def get_code_data(arg: str, logger: Logger) -> dict:
     result = get(url=URL_FORMAT.format(arg))
