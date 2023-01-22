@@ -6,12 +6,19 @@ from json import dump
 from logging import INFO
 from logging import basicConfig
 from logging import getLogger
+from logging import Logger
 from pathlib import Path
 
 from arrow import now
 from requests import get
 
 from agencies import TOP_TIER
+
+def get_code_data(arg: str, logger: Logger) -> dict:
+    result = get(url=URL_FORMAT.format(arg))
+    logger.info('agency: %s result size: %d', arg, len(result.text))
+    return result.json()
+
 
 OUTPUT_FOLDER = './data/'
 URL_FORMAT = 'https://api.usaspending.gov/api/v2/agency/{}/'
@@ -28,12 +35,7 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    data = dict()
-    for code in TOP_TIER:
-        result = get(url=URL_FORMAT.format(code))
-        if result:
-            LOGGER.info('agency: %s result size: %d', code, len(result.text))
-            data[code] = result.json()
+    data = {code: get_code_data(code, LOGGER) for code in TOP_TIER}
 
     output_file = OUTPUT_FOLDER + 'top_tier_codes.json'
     LOGGER.info('writing %d records to %s', len(data), output_file)
