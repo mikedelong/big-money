@@ -9,7 +9,10 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from pandas import DataFrame
 
+def remove_list_values(arg: dict) -> dict:
+    return {key: value for key, value in arg.items() if not isinstance(value, list)}
 
 INPUT_FILE = 'top_tier_codes.json'
 INPUT_FOLDER = './data/'
@@ -31,5 +34,6 @@ if __name__ == '__main__':
     with open(file=input_file, mode='r') as input_fp:
         data = load(fp=input_fp)
 
+    df = DataFrame(data=[remove_list_values(arg=value) for value in data.values()])
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
