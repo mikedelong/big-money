@@ -32,7 +32,8 @@ if __name__ == '__main__':
         url = 'https://api.usaspending.gov/api/v2/agency/{}/awards/'.format(agency)
         result = get(url=url).json()
         LOGGER.info('%s %d', agency, len(result['messages']))
+        data[agency] = {key: value for key, value in result.items() if key != 'messages'}
 
-        if result:
-            data[agency] = result
+    df = DataFrame(data=data).T.drop_duplicates()
+
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
