@@ -1,5 +1,5 @@
 """
-Get some data from the USASpending API
+Combine what we know about the top tier entities into a single somewhat dirty file
 """
 
 from logging import INFO
@@ -8,8 +8,6 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
-from pandas import DataFrame
-from requests import get
 from pandas import read_csv
 
 AGENCY_AWARD_SUMMARY_FILE = 'get-agency-award-summary.csv'
@@ -33,5 +31,9 @@ if __name__ == '__main__':
     top_tier_df = read_csv(filepath_or_buffer=top_tier_file)
     award_summary_file = INPUT_FOLDER + AGENCY_AWARD_SUMMARY_FILE
     award_summary_df = read_csv(filepath_or_buffer=award_summary_file)
+    result_df = top_tier_df.merge(right=award_summary_df, on='toptier_code', how='inner')
+    output_file = OUTPUT_FOLDER + 'top_tier_summary.csv'
+    LOGGER.info('writing %d rows to %s', len(result_df), output_file)
+    result_df.to_csv(path_or_buf=output_file, index=False)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
