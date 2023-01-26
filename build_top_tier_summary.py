@@ -12,6 +12,7 @@ from pandas import read_csv
 
 AGENCY_AWARD_SUMMARY_FILE = 'get-agency-award-summary.csv'
 BUDGET_FUNCTION_COUNT_FILE = 'budget-function-count.csv'
+DROP_COLUMNS = ['fiscal_year']
 INPUT_FOLDER = './data/'
 NEW_AWARD_COUNT_FILE = 'get-award-count.csv'
 ON_COLUMN = 'toptier_code'
@@ -30,18 +31,17 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    drop_columns = ['fiscal_year']
     top_tier_file = INPUT_FOLDER + TOP_TIER_DATA_FILE
     top_tier_df = read_csv(filepath_or_buffer=top_tier_file)
     award_summary_file = INPUT_FOLDER + AGENCY_AWARD_SUMMARY_FILE
     award_summary_df = read_csv(filepath_or_buffer=award_summary_file)
-    result_df = top_tier_df.merge(right=award_summary_df.drop(columns=drop_columns), on=ON_COLUMN, how='inner')
+    result_df = top_tier_df.merge(right=award_summary_df.drop(columns=DROP_COLUMNS), on=ON_COLUMN, how='inner')
     new_count_file = INPUT_FOLDER + NEW_AWARD_COUNT_FILE
     new_count_df = read_csv(filepath_or_buffer=new_count_file)
-    result_df = result_df.merge(right=new_count_df.drop(columns=drop_columns), on=ON_COLUMN, how='inner')
+    result_df = result_df.merge(right=new_count_df.drop(columns=DROP_COLUMNS), on=ON_COLUMN, how='inner')
     function_count_file = INPUT_FOLDER + BUDGET_FUNCTION_COUNT_FILE
     function_count_df = read_csv(filepath_or_buffer=function_count_file)
-    result_df = result_df.merge(right=function_count_df.drop(columns=drop_columns), on=ON_COLUMN, how='inner')
+    result_df = result_df.merge(right=function_count_df.drop(columns=DROP_COLUMNS), on=ON_COLUMN, how='inner')
 
     output_file = OUTPUT_FOLDER + 'top_tier_summary.csv'
     LOGGER.info('writing %d rows to %s', len(result_df), output_file)
