@@ -11,6 +11,7 @@ from arrow import now
 from pandas import read_csv
 
 AGENCY_AWARD_SUMMARY_FILE = 'get-agency-award-summary.csv'
+BUDGET_FUNCTION_COUNT_FILE = 'budget-function-count.csv'
 INPUT_FOLDER = './data/'
 NEW_AWARD_COUNT_FILE = 'get-award-count.csv'
 OUTPUT_FOLDER = './data/'
@@ -38,6 +39,9 @@ if __name__ == '__main__':
     new_count_file = INPUT_FOLDER + NEW_AWARD_COUNT_FILE
     new_count_df = read_csv(filepath_or_buffer=new_count_file)
     result_df = result_df.merge(right=new_count_df.drop(columns=drop_columns), on=on_column, how='inner')
+    function_count_file = INPUT_FOLDER + BUDGET_FUNCTION_COUNT_FILE
+    function_count_df = read_csv(filepath_or_buffer=function_count_file)
+    result_df = result_df.merge(right=function_count_df.drop(columns=drop_columns), on=on_column, how='inner')
 
     output_file = OUTPUT_FOLDER + 'top_tier_summary.csv'
     LOGGER.info('writing %d rows to %s', len(result_df), output_file)
