@@ -2,16 +2,26 @@
 Get some data from the USASpending API
 """
 
+from json import dump
 from logging import INFO
 from logging import basicConfig
 from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from pandas import DataFrame
 from requests import get
 
 from agencies import TOP_TIER
-from json import dump
+
+
+def process(arg: dict) -> dict:
+    result = {key: value for key, value in arg.items() if not isinstance(value, list)}
+    for key, value in arg['agency_data_by_year'][0].items():
+        if not isinstance(value, list):
+            result[key] = value
+    return result
+
 
 OUTPUT_FOLDER = './data/'
 
@@ -39,5 +49,10 @@ if __name__ == '__main__':
     LOGGER.info('dumping %d records to %s', len(data), output_file)
     with open(file=output_file, mode='w') as output_fp:
         dump(obj=data, fp=output_fp)
+
+    df = DataFrame(data={key: process(value) for key, value in data.items()}).T
+    output_file = OUTPUT_FOLDER + 'budgetary-resources.csv'
+    LOGGER.info('writing %d records to %s', len(df), output_file)
+    df.to_csv(path_or_buf=output_file, index=False)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
