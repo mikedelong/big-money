@@ -16,11 +16,11 @@ from agencies import TOP_TIER
 
 
 def process(arg: dict) -> dict:
-    result = {key: value for key, value in arg.items() if not isinstance(value, list)}
+    result_dict = {key: value for key, value in arg.items() if not isinstance(value, list)}
     for key, value in arg['agency_data_by_year'][0].items():
         if not isinstance(value, list):
-            result[key] = value
-    return result
+            result_dict[key] = value
+    return result_dict
 
 
 OUTPUT_FOLDER = './data/'
