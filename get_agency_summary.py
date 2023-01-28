@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # data = {agency: get(url=URL + endpoint.format(agency)).json()['results'] for agency in AGENCIES}
     df = DataFrame(data=data).T.drop_duplicates()
 
-    output_file = OUTPUT_FOLDER + 'agencies-{}.csv'.format(df['active_fy'].unique()[0])
+    output_file = OUTPUT_FOLDER + 'agencies_{}.csv'.format(df['active_fy'].unique()[0])
     LOGGER.info('writing %d rows to %s', len(df), output_file)
     df.to_csv(path_or_buf=output_file)
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
