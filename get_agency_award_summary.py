@@ -35,7 +35,7 @@ if __name__ == '__main__':
         data[agency] = {key: value for key, value in result.items() if key != 'messages'}
 
     df = DataFrame(data=data).T.drop_duplicates()
-    output_file = OUTPUT_FOLDER + 'get-agency-award-summary.csv'
+    output_file = OUTPUT_FOLDER + 'get_agency_award_summary.csv'
     LOGGER.info('writing %d rows to %s', len(df), output_file)
     df.to_csv(path_or_buf=output_file, index=False)
 
