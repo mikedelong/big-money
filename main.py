@@ -8,9 +8,12 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from pandas import json_normalize
 from requests import get
 
+FULL_DOWNLOAD_URL = 'https://files.usaspending.gov/database_download/usaspending-db_20230108.zip'
 OUTPUT_FOLDER = './data/'
+URL = 'https://api.usaspending.gov/api/v2/award_spending/recipient/?fiscal_year=2016&awarding_agency_id=183'
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -24,9 +27,9 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
-    # the complete PostgreSQL archive is here
-    # and it is updated monthly
-    url = 'https://files.usaspending.gov/database_download/usaspending-db_20230108.zip'
+    result = get(url=URL)
+    result_json = result.json()
 
+    df = json_normalize(data=result_json['results'])
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
