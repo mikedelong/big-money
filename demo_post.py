@@ -11,6 +11,7 @@ from pandas import concat
 from pandas import json_normalize
 from requests import post
 
+INDEX = 3
 DATA = [
     {
         'search_text': 'Defense'
@@ -20,15 +21,64 @@ DATA = [
     },
     {
         'type': 'award_agencies'
-        # 'agency': 1
     },
-][2]
-FIELD = ['results', 'matched_terms', 'agencies'][2]
+    {
+        'columns': [],
+        'download_types': [
+            'prime_awards'
+        ],
+        'file_format': 'csv',
+        'filters': {
+            'agencies': [
+                {
+                    'name': 'Animal and Plant Health Inspection Service',
+                    'tier': 'subtier',
+                    'toptier_name': 'Department of Agriculture',
+                    'type': 'funding'
+                }
+            ],
+            'prime_and_sub_award_types': {
+                'prime_awards': [
+                    '02',
+                    '03',
+                    '04',
+                    '05',
+                    '06',
+                    '07',
+                    '08',
+                    '09',
+                    '10',
+                    '11',
+                    'A',
+                    'B',
+                    'C',
+                    'D',
+                    'IDV_A',
+                    'IDV_B',
+                    'IDV_B_A',
+                    'IDV_B_B',
+                    'IDV_B_C',
+                    'IDV_C',
+                    'IDV_D',
+                    'IDV_E'
+                ],
+                'sub_awards': []
+            },
+            'date_range': {
+                'start_date': '2019-10-01',
+                'end_date': '2020-09-30'
+            },
+        },
+        'request_type': 'award'
+    }
+][INDEX]
+FIELD = ['results', 'matched_terms', 'agencies', 'foo'][INDEX]
 URL = [
     'https://api.usaspending.gov/api/v2/autocomplete/funding_agency/',
     'https://api.usaspending.gov/api/v2/autocomplete/glossary/',
     'https://api.usaspending.gov/api/v2/bulk_download/list_agencies/',
-][2]
+    'https://api.usaspending.gov/api/v2/bulk_download/awards/',
+][INDEX]
 
 if __name__ == '__main__':
     TIME_START = now()
@@ -40,7 +90,8 @@ if __name__ == '__main__':
 
     LOGGER.info('url: %s', URL)
     LOGGER.info('data: %s', DATA)
-    response = post(url=URL, data=DATA, )
+    # response = post(url=URL, data=DATA, )
+    response = post(url=URL, json=DATA, )
     LOGGER.info('status code: %d', response.status_code)
     LOGGER.info('reason: %s', response.reason)
     if response.status_code == 200:
