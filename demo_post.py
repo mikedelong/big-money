@@ -13,6 +13,8 @@ from requests import get
 from requests import post
 
 INDEX = 3
+ALL_AWARD_TYPES = ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', 'A', 'B', 'C', 'D', 'IDV_A', 'IDV_B',
+                   'IDV_B_A', 'IDV_B_B', 'IDV_B_C', 'IDV_C', 'IDV_D', 'IDV_E', ]
 DATA = [
     {
         'search_text': 'Defense'
@@ -38,31 +40,7 @@ DATA = [
                     'type': 'funding'
                 }
             ],
-            'prime_award_types': [
-                # '02',
-                # '03',
-                # '04',
-                # '05',
-                # '06',
-                # '07',
-                # '08',
-                # '09',
-                # '10',
-                # '11',
-                'A'  # ,
-                # 'B',
-                # 'C',
-                # 'D',
-                # 'IDV_A',
-                # 'IDV_B',
-                # 'IDV_B_A',
-                # 'IDV_B_B',
-                # 'IDV_B_C',
-                # 'IDV_C',
-                # 'IDV_D',
-                # 'IDV_E'
-            ],
-            # 'sub_award_types': [],
+            'prime_award_types': ['A'],
             'date_range': {
                 'start_date': '2019-10-01',
                 'end_date': '2020-09-30'
