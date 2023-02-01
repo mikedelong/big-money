@@ -9,8 +9,8 @@ from logging import getLogger
 from arrow import now
 from pandas import concat
 from pandas import json_normalize
-from requests import post
 from requests import get
+from requests import post
 
 INDEX = 3
 DATA = [
@@ -95,7 +95,7 @@ if __name__ == '__main__':
     LOGGER.info('reason: %s', response.reason)
     if response.status_code == 200:
         response_json = response.json()
-        if FIELD == 'agengies':
+        if FIELD == 'agencies':
             df = concat([json_normalize(data=response_json[FIELD][item]) for item in response_json[FIELD].keys()])
         elif FIELD in {'results', 'matched_terms'}:
             df = json_normalize(data=response_json[FIELD])
