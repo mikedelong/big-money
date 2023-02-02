@@ -12,7 +12,7 @@ from pandas import json_normalize
 from requests import get
 from requests import post
 
-INDEX = 3
+INDEX = 4
 ALL_AWARD_TYPES = ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', 'A', 'B', 'C', 'D', 'IDV_A', 'IDV_B',
                    'IDV_B_A', 'IDV_B_B', 'IDV_B_C', 'IDV_C', 'IDV_D', 'IDV_E', ]
 ANIMALS = {'name': 'Animal and Plant Health Inspection Service', 'tier': 'subtier',
@@ -36,7 +36,8 @@ DATA = [
         'file_format': 'csv',
         'filters': {
             'agencies': [
-                {'name': 'DARPA', 'tier': 'subtier', 'toptier_name': 'Department of Defense', 'type': 'funding'}],
+                {'name': 'Defense Advanced Research Project Agency',
+                 'tier': 'subtier', 'toptier_name': 'Department of Defense', 'type': 'funding'}],
             'prime_award_types': ['A'],
             'date_range': {
                 'start_date': '2019-10-01',
@@ -44,15 +45,19 @@ DATA = [
             },
         },
         'request_type': 'award'
+    },
+    {
+        'search_text': 'Defense'
     }
 ][INDEX]
-FIELD = ['results', 'matched_terms', 'agencies', 'download'][INDEX]
+FIELD = ['results', 'matched_terms', 'agencies', 'download', 'results',][INDEX]
 OUTPUT_FOLDER = './data/'
 URL = [
     'https://api.usaspending.gov/api/v2/autocomplete/funding_agency/',
     'https://api.usaspending.gov/api/v2/autocomplete/glossary/',
     'https://api.usaspending.gov/api/v2/bulk_download/list_agencies/',
     'https://api.usaspending.gov/api/v2/bulk_download/awards/',
+    'https://api.usaspending.gov/api/v2/autocomplete/awarding_agency/',
 ][INDEX]
 
 if __name__ == '__main__':
