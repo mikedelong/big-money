@@ -36,11 +36,12 @@ DATA = [
         'file_format': 'csv',
         'filters': {
             'agencies': [
-                {'name': 'all', 'tier': 'subtier', 'toptier_name': 'Department of Defense', 'type': 'funding'}],
+                {'name': 'Defense Advanced Research Projects Agency',
+                 'tier': 'subtier', 'toptier_name': 'Department of Defense', 'type': 'funding'}],
             'prime_award_types': ALL_AWARD_TYPES,
             'date_range': {
-                'start_date': '2019-10-01',
-                'end_date': '2020-09-30'
+                'start_date': '2020-10-01',
+                'end_date': '2021-09-30'
             },
         },
         'request_type': 'award'
