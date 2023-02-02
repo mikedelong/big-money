@@ -26,8 +26,8 @@ if __name__ == '__main__':
         Path(folder).mkdir(parents=True, exist_ok=True)
 
     result = dict()
-    for input_file in glob(INPUT_FOLDER + '*.zip'):
+    for input_file in glob(INPUT_FOLDER + '*/*.csv'):
         LOGGER.info(input_file)
-        result[input_file] = read_csv(filepath_or_buffer=input_file, compression='zip')
+        result[input_file] = read_csv(filepath_or_buffer=input_file)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
