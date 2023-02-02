@@ -9,6 +9,7 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
+from pandas import read_csv
 
 INPUT_FOLDER = './data/'
 
@@ -24,7 +25,9 @@ if __name__ == '__main__':
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
+    result = dict()
     for input_file in glob(INPUT_FOLDER + '*.zip'):
         LOGGER.info(input_file)
+        result[input_file] = read_csv(filepath_or_buffer=input_file, compression='zip')
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
