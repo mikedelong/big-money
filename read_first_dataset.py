@@ -10,6 +10,7 @@ from pathlib import Path
 
 from arrow import now
 from pandas import read_csv
+from pandas import DataFrame
 
 INPUT_FOLDER = './data/'
 
@@ -26,10 +27,13 @@ if __name__ == '__main__':
         Path(folder).mkdir(parents=True, exist_ok=True)
 
     result = dict()
+    df = DataFrame()
     for index, input_file in enumerate(glob(INPUT_FOLDER + '*/*.csv')):
         if index == 0:
             LOGGER.info(input_file)
             df  =  read_csv(filepath_or_buffer=input_file)
 
+    columns_to_drop = [column for column in df.columns if df[column].isna().sum() == len(df)]
+    df = df.drop(columns=columns_to_drop)
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
