@@ -9,8 +9,8 @@ from logging import getLogger
 from pathlib import Path
 
 from arrow import now
-from pandas import read_csv
 from pandas import DataFrame
+from pandas import read_csv
 
 INPUT_FOLDER = './data/'
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     for index, input_file in enumerate(glob(INPUT_FOLDER + '*/*.csv')):
         if index == 0:
             LOGGER.info(input_file)
-            df  =  read_csv(filepath_or_buffer=input_file)
+            df = read_csv(filepath_or_buffer=input_file)
 
     columns_to_drop = [column for column in df.columns if df[column].isna().sum() == len(df)]
     df = df.drop(columns=columns_to_drop)
