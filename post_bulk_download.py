@@ -28,6 +28,10 @@ if __name__ == '__main__':
 
     with open(file='./post_bulk_download.json', mode='r') as input_fp:
         json_data = load(fp=input_fp)
+
+    # now update request fields
+    json_data['data']['filters']['agencies'][0]['name'] = 'all'
+
     LOGGER.info('url: %s', json_data['url'])
     LOGGER.info('data: %s', json_data['data'])
     response = post(url=json_data['url'], json=json_data['data'], )
