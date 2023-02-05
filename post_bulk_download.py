@@ -2,17 +2,15 @@
 Get some data from the USASpending API
 """
 
+from json import load
 from logging import INFO
 from logging import basicConfig
 from logging import getLogger
+from time import sleep
 
 from arrow import now
-from time import sleep
-from pandas import concat
-from pandas import json_normalize
 from requests import get
 from requests import post
-from json import load
 
 ALL_AWARD_TYPES = ['02', '03', '04', '05', '06', '07', '08', '09', '10', '11', 'A', 'B', 'C', 'D', 'IDV_A', 'IDV_B',
                    'IDV_B_A', 'IDV_B_B', 'IDV_B_C', 'IDV_C', 'IDV_D', 'IDV_E', ]
