@@ -29,6 +29,7 @@ if __name__ == '__main__':
 
     # now update request fields
     json_data['data']['filters']['agencies'][0]['name'] = 'all'
+    json_data['data']['filters']['prime_award_types'] = ALL_AWARD_TYPES
 
     LOGGER.info('url: %s', json_data['url'])
     LOGGER.info('data: %s', json_data['data'])
