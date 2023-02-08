@@ -11,8 +11,9 @@ from pathlib import Path
 from arrow import now
 from pandas import read_csv
 from requests import get
+from json import dump
 
-INPUT_FOLDER = './data/'
+OUTPUT_FOLDER = './data/'
 URL = 'https://api.usaspending.gov/api/v2/references/naics/'
 
 if __name__ == '__main__':
@@ -23,12 +24,16 @@ if __name__ == '__main__':
         LOGGER.handlers.clear()
     LOGGER.info('started')
 
-    for folder in [INPUT_FOLDER]:
+    for folder in [OUTPUT_FOLDER]:
         LOGGER.info('creating folder %s if it does not exist', folder)
         Path(folder).mkdir(parents=True, exist_ok=True)
 
     result = get(url=URL)
     if result.status_code == 200:
         result_json = result.json()
+        output_file = OUTPUT_FOLDER + 'naics_two_digits.json'
+        with open(file=output_file, mode='w') as output_fp:
+            dump(obj=result_json['results'], fp=output_fp, indent=4, sort_keys=True)
+
 
     LOGGER.info('total time: {:5.2f}s'.format((now() - TIME_START).total_seconds()))
