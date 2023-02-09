@@ -2,14 +2,11 @@
 Get some data from the USASpending API
 """
 
-from json import load
 from logging import INFO
 from logging import basicConfig
 from logging import getLogger
-from time import sleep
 
 from arrow import now
-from requests import get
 from requests import post
 
 DATA = {
